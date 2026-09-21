@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Recibo de Apartado | Peque Urban</title>
+
+<style>
+
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+    font-family:Arial, Helvetica, sans-serif;
+}
+
+body{
+    background:#f3f4f6;
+    padding:30px;
+}
+
+.container{
+    max-width:900px;
+    margin:auto;
+}
+
+.recibo{
+    background:white;
+    padding:30px;
+    border-radius:10px;
+    box-shadow:0 2px 10px rgba(0,0,0,.1);
+}
+
+.header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:25px;
+    border-bottom:2px solid #ddd;
+    padding-bottom:15px;
+}
+
+.logo h1{
+    color:#111827;
+    margin-bottom:5px;
+}
+
+.logo p{
+    color:#6b7280;
+}
+
+.folio{
+    text-align:right;
+}
+
+.folio span{
+    font-weight:bold;
+    color:#111827;
+}
+
+.section{
+    margin-bottom:20px;
+}
+
+.section h3{
+    margin-bottom:10px;
+    color:#111827;
+}
+
+.row{
+    display:flex;
+    gap:15px;
+    flex-wrap:wrap;
+}
+
+.field{
+    flex:1;
+    min-width:250px;
+}
+
+label{
+    display:block;
+    font-size:14px;
+    margin-bottom:5px;
+    font-weight:bold;
+}
+
+input{
+    width:100%;
+    padding:10px;
+    border:1px solid #d1d5db;
+    border-radius:6px;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+}
+
+table th{
+    background:#111827;
+    color:white;
+    padding:12px;
+}
+
+table td{
+    border:1px solid #ddd;
+    padding:10px;
+}
+
+.totales{
+    width:350px;
+    margin-left:auto;
+    margin-top:20px;
+}
+
+.totales div{
+    display:flex;
+    justify-content:space-between;
+    padding:8px 0;
+    font-size:16px;
+}
+
+.saldo{
+    font-weight:bold;
+    color:#dc2626;
+}
+
+.estado{
+    font-weight:bold;
+}
+
+.liquidado{
+    color:green;
+}
+
+.pendiente{
+    color:#dc2626;
+}
+
+.botones{
+    display:flex;
+    gap:10px;
+    margin-top:25px;
+}
+
+button{
+    border:none;
+    padding:12px 20px;
+    border-radius:6px;
+    cursor:pointer;
+    color:white;
+    font-weight:bold;
+}
+
+.guardar{
+    background:#2563eb;
+}
+
+.imprimir{
+    background:#111827;
+}
+
+.firma{
+    display:flex;
+    justify-content:space-between;
+    margin-top:50px;
+}
+
+.firma div{
+    width:250px;
+    text-align:center;
+    border-top:1px solid #000;
+    padding-top:10px;
+}
+
+@media print{
+    .botones{
+        display:none;
+    }
+
+    body{
+        background:white;
+    }
+
+    .recibo{
+        box-shadow:none;
+    }
+}
+
+</style>
+</head>
+<body>
+
+<div class="container">
+
+<div class="recibo">
+
+<div class="header">
+
+<div class="logo">
+<h1>PEQUE URBAN</h1>
+<p>Control de Apartados y Pagos a Cuenta</p>
+</div>
+
+<div class="folio">
+Recibo No.<br>
+<span id="folioVisual"></span>
+</div>
+
+</div>
+
+<div class="section">
+
+<h3>Datos del Cliente</h3>
+
+<div class="row">
+
+<div class="field">
+<label>Nombre</label>
+<input type="text" id="cliente">
+</div>
+
+<div class="field">
+<label>Teléfono</label>
+<input type="text" id="telefono">
+</div>
+
+</div>
+
+</div>
+
+<div class="section">
+
+<h3>Detalle del Apartado</h3>
+
+<table>
+
+<thead>
+<tr>
+<th>Descripción</th>
+<th>Costo Total</th>
+<th>Pago Actual</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+
+<td>
+<input type="text" id="descripcion">
+</td>
+
+<td>
+<input type="number" id="costo" value="0">
+</td>
+
+<td>
+<input type="number" id="abono" value="0">
+</td>
+
+</tr>
+</tbody>
+
+</table>
+
+<div class="totales">
+
+<div>
+<span>Costo:</span>
+<span id="txtCosto">$0.00</span>
+</div>
+
+<div>
+<span>Total Abonado:</span>
+<span id="txtAbonado">$0.00</span>
+</div>
+
+<div class="saldo">
+<span>Saldo Pendiente:</span>
+<span id="txtSaldo">$0.00</span>
+</div>
+
+<div class="estado">
+<span>Estado:</span>
+<span id="estado">PENDIENTE</span>
+</div>
+
+</div>
+
+</div>
+
+<div class="section">
+
+<label>Fecha</label>
+<input type="date" id="fecha">
+
+</div>
+
+<div class="firma">
+<div>Firma del Cliente</div>
+<div>Peque Urban</div>
+</div>
+
+<div class="botones">
+
+<button class="guardar" onclick="guardarPago()">
+Guardar Pago
+</button>
+
+<button class="imprimir" onclick="window.print()">
+Imprimir Recibo
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+<script>
+
+let consecutivo =
+parseInt(localStorage.getItem("consecutivoPU")) || 1;
+
+const folio =
+"PU-" + consecutivo.toString().padStart(5,"0");
+
+document.getElementById("folioVisual").innerText = folio;
+
+function actualizarVista(){
+
+    const costo =
+    parseFloat(document.getElementById("costo").value) || 0;
+
+    const abonado =
+    parseFloat(localStorage.getItem("abonado_"+folio)) || 0;
+
+    const saldo = costo - abonado;
+
+    document.getElementById("txtCosto").innerText =
+    "$" + costo.toFixed(2);
+
+    document.getElementById("txtAbonado").innerText =
+    "$" + abonado.toFixed(2);
+
+    document.getElementById("txtSaldo").innerText =
+    "$" + saldo.toFixed(2);
+
+    const estado =
+    saldo <= 0 ? "LIQUIDADO" : "PENDIENTE";
+
+    const campoEstado =
+    document.getElementById("estado");
+
+    campoEstado.innerText = estado;
+
+    campoEstado.className =
+    saldo <= 0 ? "liquidado" : "pendiente";
+}
+
+document.getElementById("costo")
+.addEventListener("input",actualizarVista);
+
+function guardarPago(){
+
+    const costo =
+    parseFloat(document.getElementById("costo").value) || 0;
+
+    const abonoActual =
+    parseFloat(document.getElementById("abono").value) || 0;
+
+    const abonadoAnterior =
+    parseFloat(localStorage.getItem("abonado_"+folio)) || 0;
+
+    const nuevoTotal =
+    abonadoAnterior + abonoActual;
+
+    const saldo =
+    costo - nuevoTotal;
+
+    localStorage.setItem(
+        "abonado_"+folio,
+        nuevoTotal
+    );
+
+    const estado =
+    saldo <= 0 ? "LIQUIDADO" : "PENDIENTE";
+
+    const recibo = {
+
+        folio:folio,
+        cliente:document.getElementById("cliente").value,
+        telefono:document.getElementById("telefono").value,
+        descripcion:document.getElementById("descripcion").value,
+        costo:costo,
+        ultimoAbono:abonoActual,
+        totalAbonado:nuevoTotal,
+        saldoPendiente:saldo,
+        estado:estado,
+        fecha:document.getElementById("fecha").value
+
+    };
+
+    console.log("Enviar a Dashboard", recibo);
+
+    /*
+    fetch("https://tu-api.com/recibos",{
+        method:"POST",
+        headers:{
+            "Content-Type":"application/json"
+        },
+        body:JSON.stringify(recibo)
+    });
+    */
+
+    document.getElementById("abono").value = 0;
+
+    actualizarVista();
+
+    alert(
+        "Pago registrado correctamente\n\n" +
+        "Total abonado: $" +
+        nuevoTotal.toFixed(2) +
+        "\nSaldo: $" +
+        saldo.toFixed(2)
+    );
+
+    if(saldo <= 0){
+
+        consecutivo++;
+
+        localStorage.setItem(
+            "consecutivoPU",
+            consecutivo
+        );
+    }
+}
+
+actualizarVista();
+
+document.getElementById("fecha").value =
+new Date().toISOString().split('T')[0];
+
+</script>
+
+</body>
+</html>
