@@ -2,317 +2,218 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Recibo de Apartado | Peque Urban</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Peque Urban - Apartados</title>
 
 <style>
 
 *{
-    box-sizing:border-box;
-    margin:0;
-    padding:0;
-    font-family:Arial, Helvetica, sans-serif;
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial,sans-serif;
 }
 
 body{
-    background:#f3f4f6;
-    padding:30px;
-}
-
-.container{
-    max-width:900px;
-    margin:auto;
-}
-
-.recibo{
-    background:white;
-    padding:30px;
-    border-radius:10px;
-    box-shadow:0 2px 10px rgba(0,0,0,.1);
+background:#f4f4f4;
+padding:15px;
 }
 
 .header{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    margin-bottom:25px;
-    border-bottom:2px solid #ddd;
-    padding-bottom:15px;
+display:flex;
+justify-content:space-between;
+align-items:center;
+margin-bottom:20px;
+flex-wrap:wrap;
+gap:10px;
 }
 
-.logo h1{
-    color:#111827;
-    margin-bottom:5px;
+h1{
+color:#111827;
 }
 
-.logo p{
-    color:#6b7280;
+.btn{
+background:#2563eb;
+color:white;
+padding:12px 18px;
+border:none;
+border-radius:8px;
+cursor:pointer;
+font-size:16px;
 }
 
-.folio{
-    text-align:right;
-}
-
-.folio span{
-    font-weight:bold;
-    color:#111827;
-}
-
-.section{
-    margin-bottom:20px;
-}
-
-.section h3{
-    margin-bottom:10px;
-    color:#111827;
-}
-
-.row{
-    display:flex;
-    gap:15px;
-    flex-wrap:wrap;
-}
-
-.field{
-    flex:1;
-    min-width:250px;
-}
-
-label{
-    display:block;
-    font-size:14px;
-    margin-bottom:5px;
-    font-weight:bold;
+.card{
+background:white;
+padding:15px;
+border-radius:10px;
+box-shadow:0 2px 10px rgba(0,0,0,.1);
+margin-bottom:20px;
 }
 
 input{
-    width:100%;
-    padding:10px;
-    border:1px solid #d1d5db;
-    border-radius:6px;
+width:100%;
+padding:10px;
+margin-top:5px;
+margin-bottom:10px;
+border:1px solid #ddd;
+border-radius:5px;
 }
 
 table{
-    width:100%;
-    border-collapse:collapse;
+width:100%;
+border-collapse:collapse;
+background:white;
 }
 
-table th{
-    background:#111827;
-    color:white;
-    padding:12px;
+th{
+background:#111827;
+color:white;
+padding:10px;
 }
 
-table td{
-    border:1px solid #ddd;
-    padding:10px;
+td{
+padding:8px;
+border:1px solid #ddd;
+text-align:center;
 }
 
-.totales{
-    width:350px;
-    margin-left:auto;
-    margin-top:20px;
+.estadoPendiente{
+color:red;
+font-weight:bold;
 }
 
-.totales div{
-    display:flex;
-    justify-content:space-between;
-    padding:8px 0;
-    font-size:16px;
+.estadoLiquidado{
+color:green;
+font-weight:bold;
 }
 
-.saldo{
-    font-weight:bold;
-    color:#dc2626;
+.abono{
+background:#16a34a;
+color:white;
+padding:8px;
+border:none;
+border-radius:5px;
+cursor:pointer;
 }
 
-.estado{
-    font-weight:bold;
+.eliminar{
+background:#dc2626;
+color:white;
+padding:8px;
+border:none;
+border-radius:5px;
+cursor:pointer;
 }
 
-.liquidado{
-    color:green;
+.modal{
+
+display:none;
+position:fixed;
+left:0;
+top:0;
+width:100%;
+height:100%;
+background:rgba(0,0,0,.5);
+
 }
 
-.pendiente{
-    color:#dc2626;
+.modal-content{
+
+background:white;
+max-width:500px;
+margin:40px auto;
+padding:20px;
+border-radius:10px;
+
 }
 
-.botones{
-    display:flex;
-    gap:10px;
-    margin-top:25px;
+@media(max-width:768px){
+
+table{
+display:block;
+overflow-x:auto;
 }
 
-button{
-    border:none;
-    padding:12px 20px;
-    border-radius:6px;
-    cursor:pointer;
-    color:white;
-    font-weight:bold;
-}
-
-.guardar{
-    background:#2563eb;
-}
-
-.imprimir{
-    background:#111827;
-}
-
-.firma{
-    display:flex;
-    justify-content:space-between;
-    margin-top:50px;
-}
-
-.firma div{
-    width:250px;
-    text-align:center;
-    border-top:1px solid #000;
-    padding-top:10px;
-}
-
-@media print{
-    .botones{
-        display:none;
-    }
-
-    body{
-        background:white;
-    }
-
-    .recibo{
-        box-shadow:none;
-    }
 }
 
 </style>
 </head>
+
 <body>
-
-<div class="container">
-
-<div class="recibo">
 
 <div class="header">
 
-<div class="logo">
-<h1>PEQUE URBAN</h1>
-<p>Control de Apartados y Pagos a Cuenta</p>
-</div>
+<h1>📊 Peque Urban</h1>
 
-<div class="folio">
-Recibo No.<br>
-<span id="folioVisual"></span>
-</div>
+<button class="btn" onclick="abrirModal()">
+➕ Nuevo Recibo
+</button>
 
 </div>
 
-<div class="section">
+<div class="card">
 
-<h3>Datos del Cliente</h3>
-
-<div class="row">
-
-<div class="field">
-<label>Nombre</label>
-<input type="text" id="cliente">
-</div>
-
-<div class="field">
-<label>Teléfono</label>
-<input type="text" id="telefono">
-</div>
+<input
+type="text"
+placeholder="Buscar cliente o teléfono..."
+id="buscar"
+onkeyup="filtrar()">
 
 </div>
-
-</div>
-
-<div class="section">
-
-<h3>Detalle del Apartado</h3>
 
 <table>
 
 <thead>
+
 <tr>
-<th>Descripción</th>
-<th>Costo Total</th>
-<th>Pago Actual</th>
+<th>Folio</th>
+<th>Cliente</th>
+<th>Teléfono</th>
+<th>Artículo</th>
+<th>Total</th>
+<th>Abonado</th>
+<th>Saldo</th>
+<th>Estado</th>
+<th>Acciones</th>
 </tr>
+
 </thead>
 
-<tbody>
-<tr>
-
-<td>
-<input type="text" id="descripcion">
-</td>
-
-<td>
-<input type="number" id="costo" value="0">
-</td>
-
-<td>
-<input type="number" id="abono" value="0">
-</td>
-
-</tr>
+<tbody id="tabla">
 </tbody>
 
 </table>
 
-<div class="totales">
+<div class="modal" id="modal">
 
-<div>
-<span>Costo:</span>
-<span id="txtCosto">$0.00</span>
-</div>
+<div class="modal-content">
 
-<div>
-<span>Total Abonado:</span>
-<span id="txtAbonado">$0.00</span>
-</div>
+<h2>Nuevo Recibo</h2>
 
-<div class="saldo">
-<span>Saldo Pendiente:</span>
-<span id="txtSaldo">$0.00</span>
-</div>
+<label>Nombre</label>
+<input type="text" id="cliente">
 
-<div class="estado">
-<span>Estado:</span>
-<span id="estado">PENDIENTE</span>
-</div>
+<label>Teléfono</label>
+<input type="text" id="telefono">
 
-</div>
+<label>Artículo</label>
+<input type="text" id="descripcion">
 
-</div>
+<label>Costo Total</label>
+<input type="number" id="costo">
 
-<div class="section">
+<label>Primer Abono</label>
+<input type="number" id="abono">
 
-<label>Fecha</label>
-<input type="date" id="fecha">
-
-</div>
-
-<div class="firma">
-<div>Firma del Cliente</div>
-<div>Peque Urban</div>
-</div>
-
-<div class="botones">
-
-<button class="guardar" onclick="guardarPago()">
-Guardar Pago
+<button class="btn" onclick="guardarRecibo()">
+Guardar
 </button>
 
-<button class="imprimir" onclick="window.print()">
-Imprimir Recibo
+<button
+class="eliminar"
+onclick="cerrarModal()">
+Cancelar
 </button>
-
-</div>
 
 </div>
 
@@ -320,127 +221,196 @@ Imprimir Recibo
 
 <script>
 
+let recibos =
+JSON.parse(localStorage.getItem("recibos")) || [];
+
 let consecutivo =
 parseInt(localStorage.getItem("consecutivoPU")) || 1;
 
+function abrirModal(){
+document.getElementById("modal").style.display="block";
+}
+
+function cerrarModal(){
+document.getElementById("modal").style.display="none";
+}
+
+function guardarRecibo(){
+
+const costo =
+parseFloat(document.getElementById("costo").value) || 0;
+
+const abono =
+parseFloat(document.getElementById("abono").value) || 0;
+
+const saldo =
+costo - abono;
+
 const folio =
-"PU-" + consecutivo.toString().padStart(5,"0");
+"PU-" +
+String(consecutivo).padStart(5,"0");
 
-document.getElementById("folioVisual").innerText = folio;
+const recibo={
 
-function actualizarVista(){
+folio:folio,
+cliente:document.getElementById("cliente").value,
+telefono:document.getElementById("telefono").value,
+descripcion:document.getElementById("descripcion").value,
+costo:costo,
+totalAbonado:abono,
+saldoPendiente:saldo
 
-    const costo =
-    parseFloat(document.getElementById("costo").value) || 0;
+};
 
-    const abonado =
-    parseFloat(localStorage.getItem("abonado_"+folio)) || 0;
+recibos.push(recibo);
 
-    const saldo = costo - abonado;
+localStorage.setItem(
+"recibos",
+JSON.stringify(recibos)
+);
 
-    document.getElementById("txtCosto").innerText =
-    "$" + costo.toFixed(2);
+consecutivo++;
 
-    document.getElementById("txtAbonado").innerText =
-    "$" + abonado.toFixed(2);
+localStorage.setItem(
+"consecutivoPU",
+consecutivo
+);
 
-    document.getElementById("txtSaldo").innerText =
-    "$" + saldo.toFixed(2);
+cerrarModal();
 
-    const estado =
-    saldo <= 0 ? "LIQUIDADO" : "PENDIENTE";
+cargarTabla();
 
-    const campoEstado =
-    document.getElementById("estado");
-
-    campoEstado.innerText = estado;
-
-    campoEstado.className =
-    saldo <= 0 ? "liquidado" : "pendiente";
 }
 
-document.getElementById("costo")
-.addEventListener("input",actualizarVista);
+function cargarTabla(){
 
-function guardarPago(){
+const tabla =
+document.getElementById("tabla");
 
-    const costo =
-    parseFloat(document.getElementById("costo").value) || 0;
+tabla.innerHTML="";
 
-    const abonoActual =
-    parseFloat(document.getElementById("abono").value) || 0;
+recibos.forEach((r,index)=>{
 
-    const abonadoAnterior =
-    parseFloat(localStorage.getItem("abonado_"+folio)) || 0;
+const estado =
+r.saldoPendiente <=0
+? "LIQUIDADO"
+: "PENDIENTE";
 
-    const nuevoTotal =
-    abonadoAnterior + abonoActual;
+tabla.innerHTML += `
 
-    const saldo =
-    costo - nuevoTotal;
+<tr>
 
-    localStorage.setItem(
-        "abonado_"+folio,
-        nuevoTotal
-    );
+<td>${r.folio}</td>
 
-    const estado =
-    saldo <= 0 ? "LIQUIDADO" : "PENDIENTE";
+<td>${r.cliente}</td>
 
-    const recibo = {
+<td>${r.telefono}</td>
 
-        folio:folio,
-        cliente:document.getElementById("cliente").value,
-        telefono:document.getElementById("telefono").value,
-        descripcion:document.getElementById("descripcion").value,
-        costo:costo,
-        ultimoAbono:abonoActual,
-        totalAbonado:nuevoTotal,
-        saldoPendiente:saldo,
-        estado:estado,
-        fecha:document.getElementById("fecha").value
+<td>${r.descripcion}</td>
 
-    };
+<td>$${r.costo.toFixed(2)}</td>
 
-    console.log("Enviar a Dashboard", recibo);
+<td>$${r.totalAbonado.toFixed(2)}</td>
 
-    /*
-    fetch("https://tu-api.com/recibos",{
-        method:"POST",
-        headers:{
-            "Content-Type":"application/json"
-        },
-        body:JSON.stringify(recibo)
-    });
-    */
+<td>$${r.saldoPendiente.toFixed(2)}</td>
 
-    document.getElementById("abono").value = 0;
+<td class="${
+estado=="LIQUIDADO"
+? "estadoLiquidado"
+: "estadoPendiente"
+}">
+${estado}
+</td>
 
-    actualizarVista();
+<td>
 
-    alert(
-        "Pago registrado correctamente\n\n" +
-        "Total abonado: $" +
-        nuevoTotal.toFixed(2) +
-        "\nSaldo: $" +
-        saldo.toFixed(2)
-    );
+<button
+class="abono"
+onclick="abonar(${index})">
+Abono
+</button>
 
-    if(saldo <= 0){
+<button
+class="eliminar"
+onclick="eliminar(${index})">
+Eliminar
+</button>
 
-        consecutivo++;
+</td>
 
-        localStorage.setItem(
-            "consecutivoPU",
-            consecutivo
-        );
-    }
+</tr>
+
+`;
+
+});
+
 }
 
-actualizarVista();
+function abonar(index){
 
-document.getElementById("fecha").value =
-new Date().toISOString().split('T')[0];
+let monto =
+prompt("Monto del nuevo abono");
+
+if(!monto) return;
+
+monto = parseFloat(monto);
+
+recibos[index].totalAbonado += monto;
+
+recibos[index].saldoPendiente =
+recibos[index].costo -
+recibos[index].totalAbonado;
+
+localStorage.setItem(
+"recibos",
+JSON.stringify(recibos)
+);
+
+cargarTabla();
+
+}
+
+function eliminar(index){
+
+if(confirm("¿Eliminar recibo?")){
+
+recibos.splice(index,1);
+
+localStorage.setItem(
+"recibos",
+JSON.stringify(recibos)
+);
+
+cargarTabla();
+
+}
+
+}
+
+function filtrar(){
+
+let texto =
+document
+.getElementById("buscar")
+.value
+.toLowerCase();
+
+document
+.querySelectorAll("#tabla tr")
+.forEach(fila=>{
+
+fila.style.display =
+fila.textContent
+.toLowerCase()
+.includes(texto)
+? ""
+: "none";
+
+});
+
+}
+
+cargarTabla();
 
 </script>
 
