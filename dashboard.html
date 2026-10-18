@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Dashboard Peque Urban</title>
+
+<style>
+
+body{
+    font-family:Arial,sans-serif;
+    background:#f4f4f4;
+    margin:0;
+    padding:20px;
+}
+
+h1{
+    color:#222;
+}
+
+.card{
+    background:white;
+    padding:20px;
+    border-radius:10px;
+    margin-bottom:20px;
+    box-shadow:0 2px 5px rgba(0,0,0,.1);
+}
+
+input{
+    width:100%;
+    padding:10px;
+    margin:10px 0;
+    border:1px solid #ddd;
+    border-radius:5px;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+    background:white;
+}
+
+th{
+    background:#111827;
+    color:white;
+    padding:12px;
+}
+
+td{
+    border:1px solid #ddd;
+    padding:10px;
+    text-align:center;
+}
+
+button{
+    border:none;
+    padding:8px 12px;
+    border-radius:5px;
+    cursor:pointer;
+}
+
+.abono{
+    background:#22c55e;
+    color:white;
+}
+
+.eliminar{
+    background:#dc2626;
+    color:white;
+}
+
+.liquidado{
+    color:green;
+    font-weight:bold;
+}
+
+.pendiente{
+    color:red;
+    font-weight:bold;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<h1>📊 Dashboard de Apartados Peque Urban</h1>
+
+<div class="card">
+
+<input
+type="text"
+id="buscar"
+placeholder="Buscar cliente o teléfono..."
+onkeyup="filtrar()">
+
+</div>
+
+<table>
+
+<thead>
+
+<tr>
+<th>Folio</th>
+<th>Cliente</th>
+<th>Teléfono</th>
+<th>Artículo</th>
+<th>Total</th>
+<th>Abonado</th>
+<th>Saldo</th>
+<th>Estado</th>
+<th>Acciones</th>
+</tr>
+
+</thead>
+
+<tbody id="tablaRecibos">
+
+</tbody>
+
+</table>
+
+<script>
+
+let recibos =
+JSON.parse(localStorage.getItem("recibos")) || [];
+
+function cargarTabla(){
+
+    const tbody =
+    document.getElementById("tablaRecibos");
+
+    tbody.innerHTML = "";
+
+    recibos.forEach((r,index)=>{
+
+        let estado =
+        r.saldoPendiente <= 0
+        ? "LIQUIDADO"
+        : "PENDIENTE";
+
+        tbody.innerHTML += `
+        <tr>
+
+        <td>${r.folio}</td>
+
+        <td>${r.cliente}</td>
+
+        <td>${r.telefono}</td>
+
+        <td>${r.descripcion}</td>
+
+        <td>$${r.costo}</td>
+
+        <td>$${r.totalAbonado}</td>
+
+        <td>$${r.saldoPendiente}</td>
+
+        <td class="${estado=='LIQUIDADO'
+        ? 'liquidado'
+        : 'pendiente'}">
+
+        ${estado}
+
+        </td>
+
+        <td>
+
+        <button
+        class="abono"
+        onclick="registrarAbono(${index})">
+
+        Abono
+
+        </button>
+
+        <button
+        class="eliminar"
+        onclick="eliminar(${index})">
+
+        Eliminar
+
+        </button>
+
+        </td>
+
+        </tr>
+        `;
+
+    });
+
+}
+
+function registrarAbono(index){
+
+    let cantidad =
+    prompt("Monto del nuevo abono:");
+
+    if(!cantidad) return;
+
+    cantidad = parseFloat(cantidad);
+
+    recibos[index].totalAbonado += cantidad;
+
+    recibos[index].saldoPendiente =
+    recibos[index].costo -
+    recibos[index].totalAbonado;
+
+    localStorage.setItem(
+        "recibos",
+        JSON.stringify(recibos)
+    );
+
+    cargarTabla();
+
+}
+
+function eliminar(index){
+
+    if(confirm("¿Eliminar recibo?")){
+
+        recibos.splice(index,1);
+
+        localStorage.setItem(
+        "recibos",
+        JSON.stringify(recibos)
+        );
+
+        cargarTabla();
+
+    }
+
+}
+
+function filtrar(){
+
+    let texto =
+    document.getElementById("buscar")
+    .value
+    .toLowerCase();
+
+    let filas =
+    document.querySelectorAll("tbody tr");
+
+    filas.forEach(fila=>{
+
+        let contenido =
+        fila.textContent.toLowerCase();
+
+        fila.style.display =
+        contenido.includes(texto)
+        ? ""
+        : "none";
+
+    });
+
+}
+
+cargarTabla();
+
+</script>
+
+</body>
+</html>
